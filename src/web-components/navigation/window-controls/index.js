@@ -25,6 +25,7 @@ customElements.define(window_controls,
     const button_minimize = Reflect.construct(customElements.get(window_controls), [RegExp('\u{1F5D5}').source])
         button_minimize.addEventListener('click', ()=>chrome.runtime.sendMessage(EXTENSION_ID, {WindowState: "minimized"}))
     const button_close = Reflect.construct(customElements.get(window_controls), [RegExp('\u{1F5D9}').source])
+        button_close.addEventListener('click', ()=>chrome.runtime.sendMessage(EXTENSION_ID, {WindowState: "closed"}))
         /* button_close.addEventListener('click', ()=>window.close()) */// [FAILING] # Scripts may close only the windows that were opened by them
     const button_maximize = Reflect.construct(customElements.get(window_controls), [RegExp('\u{1F5D6}').source])
         button_maximize.addEventListener('click', ()=>chrome.runtime.sendMessage(EXTENSION_ID, {WindowState: "maximized"}))
