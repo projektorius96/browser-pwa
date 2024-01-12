@@ -25,7 +25,7 @@ customElements.define(window_controls,
     const button_minimize = Reflect.construct(customElements.get(window_controls), [RegExp('\u{1F5D5}').source])
     const button_close = Reflect.construct(customElements.get(window_controls), [RegExp('\u{1F5D9}').source])
     const button_maximize = Reflect.construct(customElements.get(window_controls), [RegExp('\u{1F5D6}').source])
-        button_maximize.addEventListener('click', ()=>chrome.runtime.sendMessage(EXTENSION_ID, {WindowState: "ping"}, {includeTlsChannelId: false}, function(e){
+        button_maximize.addEventListener('click', ()=>chrome.runtime.sendMessage(EXTENSION_ID, {WindowState: "maximized"}, {includeTlsChannelId: false}, function(e){
             console.log(e)
         }))
     

@@ -1,8 +1,10 @@
 chrome.runtime.onMessageExternal.addListener(
     function (message, sender, sendResponse) {
-        if (message.WindowState === "ping"){
-            console.log(message.WindowState)
-            sendResponse("pong")
+        switch(message.WindowState){
+            case 'maximized':
+                chrome.windows.getCurrent(function (currentWindow) {
+                    chrome.windows.update(currentWindow.id, { state: message.WindowState });
+                })
         }
     }
 );
