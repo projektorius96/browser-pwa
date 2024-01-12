@@ -5,6 +5,10 @@ chrome.runtime.onMessageExternal.addListener(
                 chrome.windows.getCurrent(function (currentWindow) {
                     chrome.windows.update(currentWindow.id, { state: message.WindowState });
                 })
+            case 'minimized':
+                chrome.windows.getCurrent(function (currentWindow) {
+                    chrome.windows.update(currentWindow.id, { state: message.WindowState });
+                })
         }
     }
 );
