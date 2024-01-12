@@ -28,7 +28,9 @@ customElements.define(window_controls,
         button_close.addEventListener('click', ()=>chrome.runtime.sendMessage(EXTENSION_ID, {WindowState: "closed"}))
         /* button_close.addEventListener('click', ()=>window.close()) */// [FAILING] # Scripts may close only the windows that were opened by them
     const button_maximize = Reflect.construct(customElements.get(window_controls), [RegExp('\u{1F5D6}').source])
-        button_maximize.addEventListener('click', ()=>chrome.runtime.sendMessage(EXTENSION_ID, {WindowState: "maximized"}))
+        button_maximize.addEventListener('click', ()=>chrome.runtime.sendMessage(EXTENSION_ID, {WindowState: "maximized"}, {includeTlsChannelId: false}, async function(serviceWorkerResponse){
+            await document.body[serviceWorkerResponse?.requestFullscreen]()
+        }))
     
     const nav = document.body.children[window_controls];
     const nav$css = new CSSStyleSheet();

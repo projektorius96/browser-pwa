@@ -1,9 +1,12 @@
 chrome.runtime.onMessageExternal.addListener(
-    function (message) {
+    function (message, sender, sendResponse) {
         switch (message.WindowState) {
             case 'maximized':
                 chrome.windows.getCurrent(function (currentWindow) {
                     chrome.windows.update(currentWindow.id, { state: message.WindowState });
+                    if (currentWindow.state === ("normal" || "minimized")){
+                        sendResponse({requestFullscreen: "requestFullscreen"})
+                    }
                 })
             break;
             case 'minimized':
