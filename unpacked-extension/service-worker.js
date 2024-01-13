@@ -1,12 +1,3 @@
-/* === IGNORE === */
-    // chrome.runtime.onMessageExternal.addListener(
-    //     function (message, sender, sendResponse) {
-    //         chrome.windows.update(sender.tab.windowId, { state: message.WindowState })
-    //         otherwise do /* chrome.windows.remove(currentWindow.id) */
-    //     }
-    // );
-/* === IGNORE === */
-
 /* CONSIDERATIONS
 ....................    | ............... | currentWindow.state
 ----------------------------------------------------------------|
@@ -14,6 +5,7 @@ IF CURRENTLY WINDOW IS  |   MINIMIZED     | "normal" (or "minimized" if .getCurr
 IF CURRENTLY WINDOW IS  |   MAXIMIZED     | "maximized"
 IF CURRENTLY WINDOW IS  |   FULLSCREEN    | "fullscreen"
 */
+/* === IGNORE === */
 chrome.runtime.onMessageExternal.addListener(
     function (message, sender, sendResponse) {
         /* === IGNORE === */
@@ -27,8 +19,21 @@ chrome.runtime.onMessageExternal.addListener(
         /* === IGNORE === */
 
         chrome.windows.getCurrent(function(currentWindow){
-            console.log(currentWindow.state)
-        })
+            /* === IGNORE === */
+                ///* sender.tab.windowId === currentWindow.id */
+                // chrome.windows.update(sender.tab.windowId, { state: message.WindowState })
+                // chrome.windows.remove(currentWindow.id)
+            /* === IGNORE === */
 
-    }
-);
+            switch (true) {
+                // if currentWindow.state not maximized, but we pressing maximized button from webpage, please do the following:
+                case ((currentWindow.state === 'maximized') && (message.WindowState === 'maximized')):
+                    chrome.windows.update(currentWindow.id, { state: 'fullscreen' })
+                    break;
+                case ((currentWindow.state == 'fullscreen') && (message.WindowState === 'maximized')):
+                    chrome.windows.update(currentWindow.id, { state: 'maximized' })
+                    break;
+            }
+
+    })
+});
