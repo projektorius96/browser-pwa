@@ -1,5 +1,5 @@
 {
-    "name": "Browser window controls",
+    "name": "Windows control overlay",
     "version": "0.1.0",
     "manifest_version": 3,
     "description": "The extension provides publicly exposed API to browser native controls (a.k.a. System Caption Buttons on Windows or Traffic lights on MacOS)",
@@ -10,10 +10,22 @@
         "128": "icons/icon128.png"
     },
     "background": {
-        "service_worker": "service-worker.js"
+        "service_worker": "service-workers/index.js",
+        "type": "module"
     },
     "externally_connectable": {
         "matches": ["<all_urls>"]
     },
-    "permissions": ["tabs"]
+    "action" : {},
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content-script.js"
+            ]
+        }
+    ],
+    "permissions": ["activeTab"]
 }

@@ -1,3 +1,5 @@
+import { getCurrentTabId } from "./handlers.js";
+
 /* === IGNORE === */
     ///* CONSIDERATIONS
     // ....................    | ............... | currentWindow.state
@@ -11,6 +13,17 @@
     // -- if I leave FULLSCREEN to MAXIMIZED     | Browser window controls must be detached from DOM
     // */
 /* === IGNORE === */
+chrome.action.onClicked.addListener(async ()=>{
+    // chrome.windows.getCurrent({populate: true}, ({tabs})=>{
+    //     if (tabs[0].active){
+    //         chrome.tabs.sendMessage(tabs[0].id, {fullscreenReady: true})
+    //     }
+    // })
+    const TabId = await getCurrentTabId()
+    chrome.tabs.sendMessage(TabId, {fullscreenReady: true})
+    /* chrome.windows.update(e.windowId, { state: 'fullscreen' }) */
+})
+
 chrome.runtime.onMessageExternal.addListener(
     function (message) {
 
