@@ -13,7 +13,7 @@ import { getCurrentTabId } from "./handlers.js";
     // -- if I leave FULLSCREEN to MAXIMIZED     | Browser window controls must be detached from DOM
     // */
 /* === IGNORE === */
-chrome.action.onClicked.addListener(async ()=>{
+chrome.action.onClicked.addListener(async (e)=>{
     // chrome.windows.getCurrent({populate: true}, ({tabs})=>{
     //     if (tabs[0].active){
     //         chrome.tabs.sendMessage(tabs[0].id, {fullscreenReady: true})
@@ -21,11 +21,12 @@ chrome.action.onClicked.addListener(async ()=>{
     // })
     const TabId = await getCurrentTabId()
     chrome.tabs.sendMessage(TabId, {fullscreenReady: true})
-    /* chrome.windows.update(e.windowId, { state: 'fullscreen' }) */
+    chrome.windows.update(e.windowId, { state: 'fullscreen' })
 })
 
-chrome.runtime.onMessageExternal.addListener(
-    function (message) {
+/* chrome.runtime.onMessageExternal.addListener( */
+chrome.runtime.onMessage.addListener(
+    function (message, sender) {
 
         chrome.windows.getCurrent(
             function(currentWindow){
@@ -37,10 +38,12 @@ chrome.runtime.onMessageExternal.addListener(
                         break;
                     case (((currentWindow.state === 'fullscreen') || currentWindow.state === 'normal') && (message.WindowState === 'maximized')):
                         chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
+                        chrome.tabs.sendMessage(sender.tab.id, {fullscreenReady: false})
                         break;
                     
                     case ((currentWindow.state === 'fullscreen' || 'normal') && (message.WindowState === 'minimized')):
                         chrome.windows.update(currentWindow.id, { state: message.WindowState})
+                        chrome.tabs.sendMessage(sender.tab.id, {fullscreenReady: false})
                         break;
                     
                     case (currentWindow.state && (message.WindowState === 'closed')):
