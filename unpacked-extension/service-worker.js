@@ -11,39 +11,29 @@ OTHER CONSIDERATIONS:
 */
 /* === IGNORE === */
 chrome.runtime.onMessageExternal.addListener(
-    function (message, sender, sendResponse) {
+    function (message) {
 
-        chrome.windows.getCurrent(function(currentWindow){
+        chrome.windows.getCurrent(
+            function(currentWindow){
 
-            switch (true) {
-                
-                /* [START] TOGGLEABLE FULLSCREEN */
-                case ((currentWindow.state === 'maximized') && (message.WindowState === 'maximized')):
-                    chrome.windows.update(currentWindow.id, { state: 'fullscreen' /* := .requestFullscreen() */ })
-                    break;
-                case (currentWindow.state && (message.WindowState === 'maximized')):
-                    if (false);
-                    else if (currentWindow.state === 'fullscreen'){
+                switch (true) {
+                    
+                    case ((currentWindow.state === 'maximized') && (message.WindowState === 'maximized')):
+                        chrome.windows.update(currentWindow.id, { state: 'fullscreen' /* := .requestFullscreen() */ })
+                        break;
+                    case (((currentWindow.state === 'fullscreen') || currentWindow.state === 'normal') && (message.WindowState === 'maximized')):
                         chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
-                    }
-                    else if (currentWindow.state === 'normal'){
-                        chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
-                    }
-                    else;
-                    break;
-                /* TOGGLEABLE FULLSCREEN [END]  */
+                        break;
+                    
+                    case ((currentWindow.state === 'fullscreen' || 'normal') && (message.WindowState === 'minimized')):
+                        chrome.windows.update(currentWindow.id, { state: message.WindowState})
+                        break;
+                    
+                    case (currentWindow.state && (message.WindowState === 'closed')):
+                        chrome.windows.remove(currentWindow.id /* := window.close() */)
+                        break;
+                    
+                }
 
-                /* [START] INTERMEDIATE MINIMIZING STATE MANAGEMENT */
-                case ((currentWindow.state === 'fullscreen' || 'maximized') && (message.WindowState === 'minimized')):
-                    chrome.windows.update(currentWindow.id, { state: message.WindowState})
-                    break;
-                
-                /* [START] WINDOW CLOSING */
-                case (currentWindow.state && (message.WindowState === 'closed')):
-                    chrome.windows.remove(currentWindow.id /* := window.close() */)
-                    break;
-                /* WINDOW CLOSING [END] */
-            }
-
-    })
+        });
 });

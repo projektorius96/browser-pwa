@@ -9,6 +9,21 @@ const button = HTMLButtonElement.name.slice(4,-7).toLocaleLowerCase();
     // }))
 /* === EXTENSION BROKER CONFIG === */
 
+const nav$css = new CSSStyleSheet();
+const theme = "#efefef";
+nav$css.insertRule(/* style */`
+    #${window_controls} {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        background-color: ${theme};
+    }
+`)
+
+document.adoptedStyleSheets.push(
+    nav$css
+)
+
 customElements.define(window_controls, 
     class extends HTMLButtonElement {
         constructor(symbol){
@@ -18,6 +33,7 @@ customElements.define(window_controls,
                 margin: 8px;
                 margin-top: 0;
                 border: none;
+                background-color: ${theme};
             `;
             this.textContent = symbol;
             return this;
@@ -36,24 +52,10 @@ customElements.define(window_controls,
     const button_maximize = Reflect.construct(customElements.get(window_controls), [RegExp('\u{1F5D6}').source])
         button_maximize.addEventListener('click', ()=>chrome.runtime.sendMessage(EXTENSION_ID, {WindowState: "maximized"}))
     
-    
     const nav = document.body.children[window_controls];
-    const nav$css = new CSSStyleSheet();
-        nav$css.insertRule(/* style */`
-            #${window_controls} {
-                width: 100%;
-                display: flex;
-                justify-content: flex-end;
-                background-color: #efefef;
-            }
-    `)
-
-    document.adoptedStyleSheets.push(
-        nav$css
-    )
-
-    nav.append(
-        button_minimize,
-        button_maximize,
-        button_close,
-    )
+        nav.append(
+            button_minimize,
+            button_maximize,
+            button_close,
+        )
+    
