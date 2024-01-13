@@ -12,29 +12,14 @@ OTHER CONSIDERATIONS:
 /* === IGNORE === */
 chrome.runtime.onMessageExternal.addListener(
     function (message, sender, sendResponse) {
-        /* === IGNORE === */
-            // switch (message.WindowState) {
-            //     case 'normal':
-            //     case 'maximized':
-            //     case 'minimized':
-            //     case 'fullscreen':
-            //         console.log(message.WindowState)
-            // }
-        /* === IGNORE === */
-
-        const screenConfig = {
-            left: 0,
-            width: Math.ceil(sender.tab.width / 2), 
-            top: 0,
-            height: Math.ceil(sender.tab.height / 2) 
-        }
 
         chrome.windows.getCurrent(function(currentWindow){
-            /* === IGNORE === */
-                ///* sender.tab.windowId === currentWindow.id */
-                // chrome.windows.update(sender.tab.windowId, { state: message.WindowState })
-                // chrome.windows.remove(currentWindow.id)
-            /* === IGNORE === */
+
+            // DEV_NOTE # worked, but again buggy behaviour
+            // if ((currentWindow.state === 'normal') && (message.WindowState === 'minimized')){
+            //     console.log(currentWindow.state, message.WindowState)
+            //     chrome.windows.update(currentWindow.id, { state: 'minimized'/* message.WindowState */})
+            // }
 
             switch (true) {
                 
@@ -43,7 +28,6 @@ chrome.runtime.onMessageExternal.addListener(
                     chrome.windows.update(currentWindow.id, { state: 'fullscreen' /* := .requestFullscreen() */ })
                     break;
                 case (currentWindow.state && (message.WindowState === 'maximized')):
-                    // chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
                     if (false);
                     else if (currentWindow.state === 'fullscreen'){
                         chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
@@ -58,15 +42,13 @@ chrome.runtime.onMessageExternal.addListener(
 
                 /* [START] INTERMEDIATE MINIMIZING STATE MANAGEMENT */
                 case ((currentWindow.state === 'fullscreen' || 'maximized') && (message.WindowState === 'minimized')):
-                    chrome.windows.update(currentWindow.id, { state: 'normal' , ...screenConfig})
+                    chrome.windows.update(currentWindow.id, { state: /* message.WindowState,  */'normal'})
                     break;
-                case ((currentWindow.state === 'normal') && (message.WindowState === 'minimized')):
-                    console.log("KILMER")
-                    chrome.windows.update(currentWindow.id, { state: message.WindowState})
-                    break;
-                /* INTERMEDIATE MINIMIZING STATE MANAGEMENT [END] */
                 
-
+                // case ((currentWindow.state === 'normal') && (message.WindowState === 'minimized')):
+                //     console.log(123456789)
+                // break;
+                
                 /* [START] WINDOW CLOSING */
                 case (currentWindow.state && (message.WindowState === 'closed')):
                     chrome.windows.remove(currentWindow.id /* := window.close() */)
