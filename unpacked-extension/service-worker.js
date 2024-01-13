@@ -15,12 +15,6 @@ chrome.runtime.onMessageExternal.addListener(
 
         chrome.windows.getCurrent(function(currentWindow){
 
-            // DEV_NOTE # worked, but again buggy behaviour
-            // if ((currentWindow.state === 'normal') && (message.WindowState === 'minimized')){
-            //     console.log(currentWindow.state, message.WindowState)
-            //     chrome.windows.update(currentWindow.id, { state: 'minimized'/* message.WindowState */})
-            // }
-
             switch (true) {
                 
                 /* [START] TOGGLEABLE FULLSCREEN */
@@ -32,9 +26,9 @@ chrome.runtime.onMessageExternal.addListener(
                     else if (currentWindow.state === 'fullscreen'){
                         chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
                     }
-                    else if (currentWindow.state === 'normal'){
-                        chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
-                    }
+                    // else if (currentWindow.state === 'normal'){
+                    //     chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
+                    // }
                     else;
                     chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
                     break;
@@ -42,12 +36,8 @@ chrome.runtime.onMessageExternal.addListener(
 
                 /* [START] INTERMEDIATE MINIMIZING STATE MANAGEMENT */
                 case ((currentWindow.state === 'fullscreen' || 'maximized') && (message.WindowState === 'minimized')):
-                    chrome.windows.update(currentWindow.id, { state: /* message.WindowState,  */'normal'})
+                    chrome.windows.update(currentWindow.id, { state: message.WindowState})
                     break;
-                
-                // case ((currentWindow.state === 'normal') && (message.WindowState === 'minimized')):
-                //     console.log(123456789)
-                // break;
                 
                 /* [START] WINDOW CLOSING */
                 case (currentWindow.state && (message.WindowState === 'closed')):
