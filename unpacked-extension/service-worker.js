@@ -1,14 +1,15 @@
-/* CONSIDERATIONS
-....................    | ............... | currentWindow.state
-----------------------------------------------------------------|
-IF CURRENTLY WINDOW IS  |   MINIMIZED     | "normal" (or "minimized" if .getCurrent was called from console)
-IF CURRENTLY WINDOW IS  |   MAXIMIZED     | "maximized"
-IF CURRENTLY WINDOW IS  |   FULLSCREEN    | "fullscreen"
+/* === IGNORE === */
+    ///* CONSIDERATIONS
+    // ....................    | ............... | currentWindow.state
+    // ----------------------------------------------------------------|
+    // IF CURRENTLY WINDOW IS  |   MINIMIZED     | "normal" (or "minimized" if .getCurrent was called from console)
+    // IF CURRENTLY WINDOW IS  |   MAXIMIZED     | "maximized"
+    // IF CURRENTLY WINDOW IS  |   FULLSCREEN    | "fullscreen"
 
-OTHER CONSIDERATIONS:
-- in PWA FULLSCREEN MODE, FULLSCREEN IS EQUIVALENT TO MAXIMIZED, however (see next line)
--- if I leave FULLSCREEN to MAXIMIZED     | Browser window controls must be detached from DOM
-*/
+    // OTHER CONSIDERATIONS:
+    // - in PWA FULLSCREEN MODE, FULLSCREEN IS EQUIVALENT TO MAXIMIZED, however (see next line)
+    // -- if I leave FULLSCREEN to MAXIMIZED     | Browser window controls must be detached from DOM
+    // */
 /* === IGNORE === */
 chrome.runtime.onMessageExternal.addListener(
     function (message) {
@@ -36,4 +37,5 @@ chrome.runtime.onMessageExternal.addListener(
                 }
 
         });
+
 });
