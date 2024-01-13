@@ -1,6 +1,6 @@
 {
     "name": "Windows control overlay",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "manifest_version": 3,
     "description": "The extension provides publicly exposed API to browser native controls (a.k.a. System Caption Buttons on Windows or Traffic lights on MacOS)",
     "icons": {
