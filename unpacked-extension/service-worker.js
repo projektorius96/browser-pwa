@@ -4,9 +4,27 @@ chrome.runtime.onMessageExternal.addListener(
             case 'maximized':
                 chrome.windows.getCurrent(function (currentWindow) {
                     chrome.windows.update(currentWindow.id, { state: message.WindowState });
-                    if (currentWindow.state === ("normal" || "minimized")){
-                        sendResponse({requestFullscreen: "requestFullscreen"})
+                    if (currentWindow.state !== "minimized"){
+                        chrome.windows.update(currentWindow.id, { state: 'fullscreen' });
+                        /* sendResponse({requestFullscreen: "requestFullscreen"}) */
                     }
+                    // ALTERNATIVE B [FAILING] 
+                    // if (currentWindow.state === 'normal' || 'minimized'){
+                    //     chrome.windows.update(currentWindow.id, { state: 'fullscreen' });
+                    // }
+                    // else {
+                    //     chrome.windows.update(currentWindow.id, { state: 'normal' });
+                    // }
+                    // ALTERNATIVE C [FAILING]
+                    // if(false);
+                    // else if (currentWindow.state === message.WindowState){
+                    //     chrome.windows.update(currentWindow.id, { state: 'normal' });
+                    //     /* sendResponse({requestFullscreen: "requestFullscreen"}) */
+                    // }
+                    // else if (currentWindow.state !== message.WindowState){
+                    //     chrome.windows.update(currentWindow.id, { state: 'fullscreen' });
+                    //     /* sendResponse({requestFullscreen: "requestFullscreen"}) */
+                    // }
                 })
             break;
             case 'minimized':
