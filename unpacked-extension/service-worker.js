@@ -26,11 +26,10 @@ chrome.runtime.onMessageExternal.addListener(
                     else if (currentWindow.state === 'fullscreen'){
                         chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
                     }
-                    // else if (currentWindow.state === 'normal'){
-                    //     chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
-                    // }
+                    else if (currentWindow.state === 'normal'){
+                        chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
+                    }
                     else;
-                    chrome.windows.update(currentWindow.id, { state: message.WindowState /* := .exitFullscreen() */ })
                     break;
                 /* TOGGLEABLE FULLSCREEN [END]  */
 
