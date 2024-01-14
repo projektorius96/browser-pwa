@@ -10,6 +10,9 @@ const theme = "#efefef";
 nav$css.insertRule(/* style */`
     #${window_controls} {
         width: 100%;
+        position: fixed;
+        z-index: 999;
+        opacity: 0.75;
         display: flex;
         justify-content: flex-end;
         background-color: ${theme};
@@ -49,10 +52,11 @@ customElements.define(window_controls,
         button_maximize.addEventListener('click', ()=>chrome.runtime.sendMessage(EXTENSION_ID, {WindowState: "maximized"}))
 
     const nav = document.body.children[window_controls];
-
         nav.append(
             button_minimize,
             button_maximize,
             button_close,
         )
+
+    document.body.prepend(nav)
     

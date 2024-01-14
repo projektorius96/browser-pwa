@@ -15,8 +15,9 @@ const theme = "#efefef";
 nav$css.insertRule(/* style */`
     #${nav.id} {
         width: 100%;
-        position: absolute;
+        position: fixed;
         z-index: 999;
+        opacity: 0.75;
         display: flex;
         justify-content: flex-end;
         background-color: ${theme};
@@ -61,7 +62,7 @@ chrome.runtime.onMessage.addListener(
     function (message, sender, sendResponse) {
         if (false);
         else if (nav.children.length === btns.length && message?.fullscreenReady === true) {
-            document.body.appendChild(nav);
+            document.body.prepend(nav);
 
             const EXTENSION_ID = sender.id;
             document.getElementById('minimized').addEventListener('click', () => chrome.runtime.sendMessage(EXTENSION_ID, { WindowState: "minimized" }))
