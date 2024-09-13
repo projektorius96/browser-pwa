@@ -66,4 +66,38 @@ const button_maximize = Reflect.construct( customElements.get(FILE_NAMESPACE), [
 
 const nav = document.body.children[FILE_NAMESPACE];
     nav.append(button_minimize, button_maximize, button_close);
+
+/* === EXPERIMENTAL-PSEUDO-CURSOR (FULLSCREEN MODE) === */
+    let i = null;
+    document.body.addEventListener('click', async () => {
+        await document.getElementById('window-appbar-controls').requestPointerLock();
+        await document.documentElement.requestFullscreen()
+
+        if( !document.querySelector('#pseudo-cursor') ){
+            i?.remove();
+            i = document.createElement('i');
+                i.id = 'pseudo-cursor';
+                i.style.cssText = /* style */`
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    background-color: transparent;
+                `;
+            i.textContent = '👆';
+        }
+        document.body.insertAdjacentElement('beforeend', i)
+
+        let [mX, mY] = [0, 0];
+        document.addEventListener('mousemove', (event) => {
+            mX += event.movementX;
+            mY += event.movementY;
+
+            i !== null ? i.style.transform = `translate(${mX}px, ${mY}px)` : false; 
+        });
+
+    });
+/* === EXPERIMENTAL-PSEUDO-CURSOR (FULLSCREEN MODE) === */
     
