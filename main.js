@@ -8,13 +8,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 /* === */
 
+/**
+ * @type
+ * 
+ * Arbitrary margin
+ */
+let marginTop = 8;
 document.body.addEventListener('click', function(){
-    document.documentElement.requestFullscreen();
+    /* document.documentElement.requestFullscreen(); */
     this.addEventListener('mousemove', (e)=>{
-        if (document.fullscreenElement && e.clientY <= 8) {
+        if (/* document.fullscreenElement &&  */e.clientY <= marginTop) {
             this.requestPointerLock() ;
         }
-        if (document.pointerLockElement === this && e.clientY > 8){
+        if (document.pointerLockElement === this && e.clientY > marginTop){
             document.exitPointerLock();
         }
     });
